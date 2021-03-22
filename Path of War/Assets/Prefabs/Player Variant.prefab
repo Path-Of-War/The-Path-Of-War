@@ -43,7 +43,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 2
   clickPoint: {fileID: 5139136162700564446, guid: fe3da549a1e115f4eb17ca721aca6e8c, type: 3}
+  range: 2
   attackSpeed: 1
+  attack: 5
+  health: 20
+  armor: 2
+  mana: 10
 --- !u!1001 &5094819083632658738
 PrefabInstance:
   m_ObjectHideFlags: 0

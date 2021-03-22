@@ -9,7 +9,7 @@ public class PMR : MonoBehaviour
 
     private void Start()
     {
-        p.target = null;
+        p.SetTarget(null);
     }
 
     void Update()
@@ -26,7 +26,7 @@ public class PMR : MonoBehaviour
         if(other.tag == "Enemy")
         {
             Debug.Log("setting up target");
-            p.target = other.gameObject;
+            p.SetTarget(other.gameObject);
         }
     }
 }

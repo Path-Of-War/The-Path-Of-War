@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2710803167161203627}
   - component: {fileID: 2710803167161203624}
   - component: {fileID: 8773252568453871074}
+  - component: {fileID: 169753129}
   m_Layer: 0
   m_Name: Doll
   m_TagString: Enemy
@@ -112,3 +113,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &169753129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710803167161203625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607c7fe5ec0ecb54b93ddca0c7e96784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: Doll
+  health: 10
+  attack: 1
+  attackSpeed: 0.5
+  armor: 0
+  range: 3

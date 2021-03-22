@@ -5,6 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    //singleton
+    public static Player instance;
+
     #region properties
 
     //movement
@@ -22,14 +25,14 @@ public class Player : MonoBehaviour
     private string currentAnimName;
 
     //combat
-    public GameObject target;
+    GameObject target;
+    AEnemy enemy;
     public float range;
-    GameObject enemy;
     public float attackSpeed; //formula is: 1 second / attackSpeed
     float lastTimeAttacked = 0f;
 
     //stats
-    public int damage;
+    public int attack;
     public int health;
     public int armor;
     public int mana;
@@ -39,8 +42,11 @@ public class Player : MonoBehaviour
     #region Functions
 
     #region built in functions
-    void Start()
+    void Awake()
     {
+        if (instance)
+            instance = null;
+        instance = this;
         anim = GetComponent<Animation>();
     }
 
@@ -139,6 +145,7 @@ public class Player : MonoBehaviour
             if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
             {
                 //Deal the damage in this loop
+                enemy.TakeDamage(attack);
                 currentAnimName = "attack";
                 anim.CrossFade("attack");
                 lastTimeAttacked = Time.time;
@@ -147,9 +154,35 @@ public class Player : MonoBehaviour
         //That mean we still target the enemy but he is too far (bcs he fleed ?) (enemies fleeing isn't planned)
         else
         {
-            pmr = enemy.transform;
+            pmr = target.transform;
         }
     }
 
+    public void SetTarget(GameObject t)
+    {
+        if (t) { 
+        target = t;
+        enemy = t.GetComponent<AEnemy>();
+        }
+        else
+        {
+            target = null;
+            enemy = null;
+        }
+    }
+
+
+    public void TakeDamage(int amount)
+    {
+        health -= amount - armor;
+        if (health <= 0)
+            Die();
+    }
+
+    void Die()
+    {
+        //TODO Dying animation/particule
+        Debug.Log("Player Died");
+    }
     #endregion
 }
