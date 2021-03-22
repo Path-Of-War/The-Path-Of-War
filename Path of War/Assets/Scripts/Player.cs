@@ -10,13 +10,22 @@ public class Player : MonoBehaviour
     public float movementSpeed;
 
     public GameObject clickPoint;
-    private Transform pmr;
+    Transform pmr;
 
-    private GameObject triggerPMR;
+    GameObject triggerPMR;
+
+    bool isIdle;
+    Animation anim;
+    private string currentAnimName;
 
     #endregion
 
     #region Functions
+
+    void Start()
+    {
+        anim = GetComponent<Animation>();
+    }
 
     void Update()
     {
@@ -26,9 +35,13 @@ public class Player : MonoBehaviour
         float hitDistance = 0.0f;
 
         //if the player have a target point move the player to it
-        if (pmr) 
+        if (pmr) {
             Move();
-        
+        }
+        else
+        {
+            Idle();
+        }
 
         //create the target point of the player
         if (playerPlane.Raycast(ray, out hitDistance))
@@ -47,12 +60,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Move()
-    {
-        transform.LookAt(pmr.transform);
-        transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "PMR")
@@ -60,6 +67,25 @@ public class Player : MonoBehaviour
             triggerPMR = other.gameObject;
             triggerPMR.GetComponent<PMR>().DestroyPMR();
         }
+    }
+
+    private void Move()
+    {
+        isIdle = false;
+        transform.LookAt(pmr.transform);
+        transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+        if (currentAnimName != "walk") {
+            currentAnimName = "walk";
+            anim.CrossFade("walk");
+        }
+    }
+
+    private void Idle()
+    {
+        isIdle = true;
+
+        currentAnimName = "idle";
+        anim.CrossFade("idle");
     }
 
     #endregion
