@@ -5,16 +5,28 @@ using UnityEngine;
 public class PMR : MonoBehaviour
 {
     private float timer;
+    public Player p;
+
+    private void Start()
+    {
+        p.target = null;
+    }
 
     void Update()
     {
-        /*timer -= 1 * Time.deltaTime;
-        if (timer <= 0f)
-            Destroy(gameObject);*/
     }
 
     public void DestroyPMR()
     {
         Destroy(gameObject);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Enemy")
+        {
+            Debug.Log("setting up target");
+            p.target = other.gameObject;
+        }
     }
 }
