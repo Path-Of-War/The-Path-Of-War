@@ -42,5 +42,6 @@ public class AEnemy : MonoBehaviour
     {
         //TODO Dying animation/particule
         Debug.Log(enemyName + " Died");
+        Destroy(gameObject);
     }
 }

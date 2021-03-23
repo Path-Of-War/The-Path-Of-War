@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PMR
   - Enemy
+  - InvSlot
+  - Inv
   layers:
   - Default
   - TransparentFX

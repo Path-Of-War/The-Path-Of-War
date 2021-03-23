@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public GameObject clickPoint;
     Transform pmr;
     GameObject triggerPMR;
+    public bool canMove = true;
 
     //states
     bool isIdle;
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
         float hitDistance = 0.0f;
 
         //if the player have a target point move the player to it
-        if (pmr) {
+        if (pmr && canMove) {
             Move();
         }
         else
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
         }
 
         //create the target point of the player
-        if (playerPlane.Raycast(ray, out hitDistance))
+        if (playerPlane.Raycast(ray, out hitDistance) && canMove)
         {
             Vector3 mousePosition = ray.GetPoint(hitDistance);
             if (Input.GetMouseButtonDown(0))
