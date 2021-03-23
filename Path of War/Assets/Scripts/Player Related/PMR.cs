@@ -27,7 +27,16 @@ public class PMR : MonoBehaviour
         if(other.tag == "Enemy")
         {
             p.SetTarget(other.gameObject);
-            p.agent.stoppingDistance = p.range;
+            p.agent.stoppingDistance = p.range/2;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            p.SetTarget(other.gameObject);
+            p.agent.stoppingDistance = p.range/2;
         }
     }
 }

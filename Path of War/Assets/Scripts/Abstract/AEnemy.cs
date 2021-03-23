@@ -54,6 +54,7 @@ public class AEnemy : MonoBehaviour
         //Destroy(gameObject);
         p.SetTarget(null);
         p.EnemyKilled();
+        gameObject.isStatic = true;
         Quaternion target = Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90);
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);
         transform.rotation = target;
