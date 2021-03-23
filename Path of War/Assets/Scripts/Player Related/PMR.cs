@@ -9,6 +9,7 @@ public class PMR : MonoBehaviour
 
     private void Start()
     {
+        p.agent.stoppingDistance = 0;
         p.SetTarget(null);
     }
 
@@ -26,6 +27,7 @@ public class PMR : MonoBehaviour
         if(other.tag == "Enemy")
         {
             p.SetTarget(other.gameObject);
+            p.agent.stoppingDistance = p.range;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     public GameObject clickPoint;
     public Transform pmr;
     GameObject triggerPMR;
+    public NavMeshAgent agent;
     public bool canMove = true;
 
     //states
@@ -71,6 +73,8 @@ public class Player : MonoBehaviour
     #region built in functions
     void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = movementSpeed;
         baseAttackSpeed = attackSpeed;
         baseRange = range;
         currentHealth = maxHealth;
@@ -200,8 +204,11 @@ public class Player : MonoBehaviour
             {
                 isAttacking = false;
                 isIdle = false;
+                //TODO change for pathfinding
+                agent.SetDestination(pmr.position);
                 transform.LookAt(pmr.transform);
-                transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+
                 if (currentAnimName != "walk")
                 {
                     currentAnimName = "walk";
@@ -211,8 +218,11 @@ public class Player : MonoBehaviour
             else {
                 isAttacking = false;
                 isIdle = false;
+                //TODO change for pathfinding
+                agent.SetDestination(pmr.position);
                 transform.LookAt(pmr.transform);
-                transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+
                 if (currentAnimName != "walk") {
                     currentAnimName = "walk";
                     anim.CrossFadeQueued("walk");
