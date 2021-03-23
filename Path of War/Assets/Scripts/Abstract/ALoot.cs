@@ -17,7 +17,10 @@ public class ALoot : MonoBehaviour
     {
         if (isInInventory)
             Effect();
-        else
-            Debug.Log("loot the item");
+        else {
+            isInInventory = true;
+            Player.instance.inventoryData.Add(gameObject);
+            Player.instance.Itemlooted(gameObject);
+        }
     }
 }

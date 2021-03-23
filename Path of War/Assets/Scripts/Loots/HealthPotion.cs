@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class HealthPotion : ALoot
 {
+    public int healAmount;
     public override void Effect()
     {
-        Debug.Log("hey the function is overrided");
+        Player.instance.pEffect.Heal(healAmount);
     }
 }

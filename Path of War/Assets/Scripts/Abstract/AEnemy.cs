@@ -30,7 +30,7 @@ public class AEnemy : MonoBehaviour
                 {
                     //Deal the damage in this loop
                     Debug.Log("enemy attack");
-                    p.TakeDamage(attack);
+                    p.pEffect.TakeDamage(attack);
                     lastTimeAttacked = Time.time;
                 }
             }

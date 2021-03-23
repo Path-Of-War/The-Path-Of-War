@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public static Player instance;
 
     #region properties
+    public PlayerEffect pEffect;
+
 
     //movement
     public float movementSpeed;
@@ -40,11 +42,17 @@ public class Player : MonoBehaviour
     public GameObject lootingGrid;
     private List<GameObject> currentLoots = new List<GameObject>();
 
+    //inventory
+    public List<GameObject> inventoryData;
+    public GameObject inventoryGrid;
+
     //stats
     public int attack;
-    public int health;
+    public int currentHealth;
+    public int maxHealth;
     public int armor;
-    public int mana;
+    public int currentMana;
+    public int maxMana;
 
     #endregion
 
@@ -53,6 +61,8 @@ public class Player : MonoBehaviour
     #region built in functions
     void Awake()
     {
+        currentHealth = maxHealth;
+        currentMana = maxMana;
         if (instance)
             instance = null;
         instance = this;
@@ -211,6 +221,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UseItem(GameObject item)
+    {
+        int index = inventoryData.FindIndex(i => i == item);
+        Destroy(inventoryData[index]);
+    }
+    public void Itemlooted(GameObject item)
+    {
+        int index = currentLoots.FindIndex(i => i == item);
+        currentLoots[index].transform.SetParent(inventoryGrid.transform);
+        currentLoots.RemoveAt(index);
+        if(currentLoots.Count == 0)
+        {
+            CloseLootingTab();
+        }
+    }
+
     public void SetTarget(GameObject t)
     {
         if (t) { 
@@ -225,17 +251,6 @@ public class Player : MonoBehaviour
     }
 
 
-    public void TakeDamage(int amount)
-    {
-        health -= amount - armor;
-        if (health <= 0)
-            Die();
-    }
-
-    void Die()
-    {
-        //TODO Dying animation/particule
-        Debug.Log("Player Died");
-    }
+    
     #endregion
 }
