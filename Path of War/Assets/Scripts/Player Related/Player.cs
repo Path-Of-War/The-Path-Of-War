@@ -167,14 +167,21 @@ public class Player : MonoBehaviour
     private void Move()
     {
         if (!CheckRange()) 
-        { 
+        {
             isAttacking = false;
             isIdle = false;
             transform.LookAt(pmr.transform);
-            transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
-            if (currentAnimName != "walk") {
-                currentAnimName = "walk";
-                anim.CrossFade("walk");
+            if (currentAnimName == "attack" && anim.isPlaying)
+            {
+                //Wait
+            }
+            else { 
+                
+                transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+                if (currentAnimName != "walk") {
+                    currentAnimName = "walk";
+                    anim.CrossFade("walk");
+                }
             }
         }
     }
@@ -197,6 +204,7 @@ public class Player : MonoBehaviour
             if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
             {
                 //Deal the damage in this loop
+                Debug.Log("attack");
                 enemy.TakeDamage(attack);
                 currentAnimName = "attack";
                 anim.CrossFade("attack");
