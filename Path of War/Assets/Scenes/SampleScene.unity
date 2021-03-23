@@ -1493,6 +1493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71da2a6d6cec4bc4cbad6a81349aa9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smoothFactor: 0.1
+  rotationSpeed: 20
 --- !u!1 &998952879
 GameObject:
   m_ObjectHideFlags: 0
@@ -3593,10 +3595,6 @@ PrefabInstance:
       propertyPath: lootingInterface
       value: 
       objectReference: {fileID: 99603572}
-    - target: {fileID: 1044966070725818579, guid: 315155dadf214d849918e677021f6640, type: 3}
-      propertyPath: m_AngularSpeed
-      value: 180
-      objectReference: {fileID: 0}
     - target: {fileID: 3038704524487078349, guid: 315155dadf214d849918e677021f6640, type: 3}
       propertyPath: inventory
       value: 
