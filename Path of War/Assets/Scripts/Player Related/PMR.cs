@@ -25,7 +25,6 @@ public class PMR : MonoBehaviour
     {
         if(other.tag == "Enemy")
         {
-            Debug.Log("setting up target");
             p.SetTarget(other.gameObject);
         }
     }

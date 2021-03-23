@@ -3317,6 +3317,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
+      propertyPath: experiencePoint
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
       propertyPath: loots.Array.data[0]
       value: 
       objectReference: {fileID: 7636538705817450927, guid: b6ace413691f41f43addf0c7f4c4a14a, type: 3}

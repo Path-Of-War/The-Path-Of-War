@@ -17,6 +17,8 @@ public class AEnemy : MonoBehaviour
     public bool isDead = false;
     public bool isLooted = false;
 
+    public int experiencePoint;
+
     void Start()
     {
         p = Player.instance;
@@ -29,7 +31,6 @@ public class AEnemy : MonoBehaviour
                 if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
                 {
                     //Deal the damage in this loop
-                    Debug.Log("enemy attack");
                     p.pEffect.TakeDamage(attack);
                     lastTimeAttacked = Time.time;
                 }
@@ -50,6 +51,7 @@ public class AEnemy : MonoBehaviour
         isDead = true;
         Debug.Log(enemyName + " Died");
         p.SetTarget(null);
+        p.pEffect.EarnExpereience(experiencePoint);
         //Destroy(gameObject);
         Quaternion target = Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90);
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);

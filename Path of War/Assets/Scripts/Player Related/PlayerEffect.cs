@@ -27,4 +27,21 @@ public class PlayerEffect : MonoBehaviour
         //TODO Dying animation/particule
         Debug.Log("Player Died");
     }
+
+    public void EarnExpereience(int amount)
+    {
+        p.currentXp += amount;
+        while (p.currentXp >= p.xpToLevel)
+        {
+            LevelUp();
+        }
+    }
+
+    void LevelUp()
+    {
+        p.currentXp -= p.xpToLevel;
+        p.currentLevel++;
+        p.xpToLevel = (int) Mathf.Pow(p.xpToLevel,1.8f);
+        Debug.Log("leveled to " + p.currentLevel);
+    }
 }

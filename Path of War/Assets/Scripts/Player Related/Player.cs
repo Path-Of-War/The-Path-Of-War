@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     public List<GameObject> inventoryData;
     public GameObject inventoryGrid;
 
+    #region stats
     //stats
     public int attack;
     public int currentHealth;
@@ -53,6 +54,11 @@ public class Player : MonoBehaviour
     public int armor;
     public int currentMana;
     public int maxMana;
+
+    public int currentLevel = 0;
+    public int currentXp = 0;
+    public int xpToLevel = 10;
+    #endregion
 
     #endregion
 
@@ -204,7 +210,6 @@ public class Player : MonoBehaviour
             if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
             {
                 //Deal the damage in this loop
-                Debug.Log("attack");
                 enemy.TakeDamage(attack);
                 currentAnimName = "attack";
                 anim.CrossFade("attack");
