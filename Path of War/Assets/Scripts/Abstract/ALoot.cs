@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class ALoot : MonoBehaviour
 {
+    public enum LootType
+    {
+        weapon,
+        consomable
+    }
+
+    protected LootType type = LootType.consomable;
     public Sprite spr;
     public string lootName;
     bool isInInventory = false;
@@ -22,5 +29,10 @@ public class ALoot : MonoBehaviour
             Player.instance.inventoryData.Add(gameObject);
             Player.instance.Itemlooted(gameObject);
         }
+    }
+
+    public LootType GetLootType()
+    {
+        return type;
     }
 }

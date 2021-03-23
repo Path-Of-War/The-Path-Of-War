@@ -3317,13 +3317,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
-      propertyPath: experiencePoint
-      value: 11
+      propertyPath: loots.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
-      propertyPath: loots.Array.data[0]
+      propertyPath: loots.Array.data[2]
       value: 
-      objectReference: {fileID: 7636538705817450927, guid: b6ace413691f41f43addf0c7f4c4a14a, type: 3}
+      objectReference: {fileID: 5664824829683333642, guid: f4ddb58649a6a1a40a4417ebb361b476, type: 3}
+    - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
+      propertyPath: lootPercentage.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 169753129, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
+      propertyPath: lootPercentage.Array.data[2]
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2710803167161203625, guid: d26aacf6733274246b8a5fd1e3c15dd2, type: 3}
       propertyPath: m_Name
       value: Doll

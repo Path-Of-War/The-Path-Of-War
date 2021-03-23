@@ -8,5 +8,6 @@ public class HealthPotion : ALoot
     public override void Effect()
     {
         Player.instance.pEffect.Heal(healAmount);
+        Player.instance.UseItem(gameObject);
     }
 }

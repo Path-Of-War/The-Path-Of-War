@@ -133,7 +133,9 @@ MonoBehaviour:
   range: 3
   loots:
   - {fileID: 7636538705817450927, guid: b6ace413691f41f43addf0c7f4c4a14a, type: 3}
+  - {fileID: 5664824829683333642, guid: f4ddb58649a6a1a40a4417ebb361b476, type: 3}
   lootPercentage:
+  - 100
   - 100
   isDead: 0
   isLooted: 0

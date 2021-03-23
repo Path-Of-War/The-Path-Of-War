@@ -11,12 +11,13 @@ public class Player : MonoBehaviour
 
     #region properties
     public PlayerEffect pEffect;
+    public Equipement pEquipement;
 
 
     //movement
     public float movementSpeed;
     public GameObject clickPoint;
-    Transform pmr;
+    public Transform pmr;
     GameObject triggerPMR;
     public bool canMove = true;
 
@@ -55,6 +56,9 @@ public class Player : MonoBehaviour
     public int currentMana;
     public int maxMana;
 
+    public float baseRange;
+    public float baseAttackSpeed;
+
     public int currentLevel = 0;
     public int currentXp = 0;
     public int xpToLevel = 10;
@@ -67,6 +71,8 @@ public class Player : MonoBehaviour
     #region built in functions
     void Awake()
     {
+        baseAttackSpeed = attackSpeed;
+        baseRange = range;
         currentHealth = maxHealth;
         currentMana = maxMana;
         if (instance)
@@ -82,8 +88,24 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         float hitDistance = 0.0f;
 
+        //speed the attack animation to be good with the attack speed
+        if (isAttacking)
+        {
+            foreach (AnimationState aState in anim)
+            {
+                aState.speed = 1f * attackSpeed +0.1f;
+            }
+        }
+        else
+        {
+            foreach (AnimationState aState in anim)
+            {
+                aState.speed = 1;
+            }
+        }
+
         //if the player have a target point move the player to it
-        if (pmr && canMove) {
+        if (pmr) {
             Move();
         }
         else
@@ -172,23 +194,31 @@ public class Player : MonoBehaviour
     }
     private void Move()
     {
-        if (!CheckRange()) 
+        if (!CheckRange() && canMove) 
         {
-            isAttacking = false;
-            isIdle = false;
-            transform.LookAt(pmr.transform);
-            if (currentAnimName == "attack" && anim.isPlaying)
+            if (currentAnimName == "idle" && anim.isPlaying)
             {
-                //Wait
-            }
-            else { 
-                
+                isAttacking = false;
+                isIdle = false;
+                transform.LookAt(pmr.transform);
                 transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
-                if (currentAnimName != "walk") {
+                if (currentAnimName != "walk")
+                {
                     currentAnimName = "walk";
                     anim.CrossFade("walk");
                 }
             }
+            else {
+                isAttacking = false;
+                isIdle = false;
+                transform.LookAt(pmr.transform);
+                transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
+                if (currentAnimName != "walk") {
+                    currentAnimName = "walk";
+                    anim.CrossFadeQueued("walk");
+                }
+            }
+            
         }
     }
 
@@ -203,23 +233,22 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        if (Vector3.Distance(transform.position, target.transform.position) <= range)
-        {
-            isIdle = false;
-            isAttacking = true;
-            if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
+        if (enemy) { 
+            if (Vector3.Distance(transform.position, enemy.transform.position) <= range)
             {
-                //Deal the damage in this loop
-                enemy.TakeDamage(attack);
-                currentAnimName = "attack";
-                anim.CrossFade("attack");
-                lastTimeAttacked = Time.time;
+                isIdle = false;
+                canMove = false;
+                isAttacking = true;
+                if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
+                {
+                    //Deal the damage in this loop
+
+                    currentAnimName = "attack";
+                    anim.CrossFade("attack",0.1f);
+                    lastTimeAttacked = Time.time;
+                    enemy.TakeDamage(attack);
+                }
             }
-        }
-        //That mean we still target the enemy but he is too far (bcs he fleed ?) (enemies fleeing isn't planned)
-        else
-        {
-            pmr = target.transform;
         }
     }
 
@@ -236,8 +265,11 @@ public class Player : MonoBehaviour
 
     public void UseItem(GameObject item)
     {
+        
         int index = inventoryData.FindIndex(i => i == item);
-        Destroy(inventoryData[index]);
+        if (item.GetComponent<ALoot>().GetLootType() == ALoot.LootType.consomable)
+            Destroy(inventoryData[index]);
+        inventoryData.RemoveAll(i => i == null);
     }
     public void Itemlooted(GameObject item)
     {
@@ -264,6 +296,13 @@ public class Player : MonoBehaviour
     }
 
 
+    public void EnemyKilled()
+    {
+        isIdle = true;
+        isAttacking = false;
+        isLooting = false;
+        canMove = true;
+    }
     
     #endregion
 }
