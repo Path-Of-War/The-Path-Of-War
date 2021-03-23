@@ -9,6 +9,7 @@ public class PMR : MonoBehaviour
 
     private void Start()
     {
+        p = Player.instance;
         p.agent.stoppingDistance = 0;
         p.SetTarget(null);
     }

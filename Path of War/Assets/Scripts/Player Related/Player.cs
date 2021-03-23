@@ -136,20 +136,15 @@ public class Player : MonoBehaviour
             //TODO menue
         }
 
-        //create the target point of the player
-        if (playerPlane.Raycast(ray, out hitDistance) && canMove)
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePosition = ray.GetPoint(hitDistance);
-            if (Input.GetMouseButtonDown(0))
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
             {
-                //We want only one target position at a time
                 if (pmr)
                     DestroyImmediate(pmr.gameObject);
-
-                pmr = Instantiate(clickPoint.transform, mousePosition, Quaternion.identity);
-                pmr.GetComponent<PMR>().p = this;
-
-                
+                pmr = Instantiate(clickPoint.transform, hit.point, Quaternion.identity);
             }
         }
     }
