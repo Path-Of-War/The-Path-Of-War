@@ -8,6 +8,7 @@ public class AWeapon : ALoot
     public float bonusRange;
     public float attackSpeed;
     public bool isUsed;
+    public int level;
     private void Start()
     {
         type = LootType.weapon;

@@ -7,6 +7,7 @@ public class ALoot : MonoBehaviour
     public enum LootType
     {
         weapon,
+        armor,
         consomable
     }
 

@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AArmor : MonoBehaviour
+public class AArmor : ALoot
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum ArmorType
     {
-        
+        helmet,
+        chest,
+        boots,
+        shoulder,
+        gloves
     }
 
-    // Update is called once per frame
-    void Update()
+    public int bonusHealth;
+    public int bonusArmor;
+    public int level;
+    public ArmorType armorType;
+
+    private void Start()
     {
-        
+        type = LootType.armor;
     }
 }
