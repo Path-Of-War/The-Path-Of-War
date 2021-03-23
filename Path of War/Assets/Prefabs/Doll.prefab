@@ -131,3 +131,8 @@ MonoBehaviour:
   attackSpeed: 0.5
   armor: 0
   range: 3
+  loots:
+  - {fileID: 0}
+  lootPercentage:
+  - 100
+  isDead: 0

@@ -46,6 +46,9 @@ MonoBehaviour:
   canMove: 1
   range: 2
   attackSpeed: 1
+  lootRange: 2
+  lootingInterface: {fileID: 0}
+  lootingGrid: {fileID: 0}
   attack: 5
   health: 20
   armor: 2
@@ -63,6 +66,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+  selectedMat: {fileID: 2100000, guid: 5f226f2ccc0135d4499194ddfcb33726, type: 2}
+  unselectedMat: {fileID: 2100000, guid: 930eef3769028af4c8cef6eaf8e4348c, type: 2}
 --- !u!1001 &5094819083632658738
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -44,6 +44,12 @@ public class Inventory : MonoBehaviour
             isEnable = !isEnable;
             Player.instance.canMove = !isEnable;
         }
+
+        if(Input.GetMouseButtonDown(0) && isEnable && slotHovered)
+        {
+            slotHovered.GetComponent<Slots>().UseItem();
+        }
+
         if (!isEnable)
         {
             if (slotHovered)

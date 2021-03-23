@@ -11,7 +11,11 @@ public class AEnemy : MonoBehaviour
     float lastTimeAttacked;
     public int armor;
     public int range;
+    public List<GameObject> loots;
+    public List<float> lootPercentage;
     Player p;
+    public bool isDead = false;
+    public bool isLooted = false;
 
     void Start()
     {
@@ -19,29 +23,52 @@ public class AEnemy : MonoBehaviour
     }
     void Update()
     {
-        if(Vector3.Distance(p.transform.position,transform.position) <= range)
-        {
-            if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
+        if (!isDead) { 
+            if(Vector3.Distance(p.transform.position,transform.position) <= range)
             {
-                //Deal the damage in this loop
-                Debug.Log("enemy attack");
-                p.TakeDamage(attack);
-                lastTimeAttacked = Time.time;
+                if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
+                {
+                    //Deal the damage in this loop
+                    Debug.Log("enemy attack");
+                    p.TakeDamage(attack);
+                    lastTimeAttacked = Time.time;
+                }
             }
         }
-        
+
     }
     public void TakeDamage(int amount)
     {
         health -= amount - armor;
-        if (health <= 0)
+        if (health <= 0 && !isDead)
             Die();
     }
 
     void Die()
     {
         //TODO Dying animation/particule
+        isDead = true;
         Debug.Log(enemyName + " Died");
-        Destroy(gameObject);
+        p.SetTarget(null);
+        //Destroy(gameObject);
+        Quaternion target = Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90);
+        Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);
+        transform.rotation = target;
+        transform.position = targetPos;
+    }
+
+    public List<GameObject> getLoots()
+    {
+        List<GameObject> lootsEarned = new List<GameObject>();
+
+        for (int i = 0; i < loots.Count; i++)
+        {
+            if (lootPercentage[i] >= Random.Range(0, 100))
+            {
+                lootsEarned.Add(loots[i]);
+            }
+        }
+        isLooted = true;
+        return lootsEarned;
     }
 }

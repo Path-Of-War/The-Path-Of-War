@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     //states
     bool isIdle;
     bool isAttacking;
+    bool isLooting;
 
     //animation
     Animation anim;
@@ -31,6 +33,12 @@ public class Player : MonoBehaviour
     public float range;
     public float attackSpeed; //formula is: 1 second / attackSpeed
     float lastTimeAttacked = 0f;
+
+    //gathering
+    public float lootRange;
+    public GameObject lootingInterface;
+    public GameObject lootingGrid;
+    private List<GameObject> currentLoots = new List<GameObject>();
 
     //stats
     public int attack;
@@ -71,6 +79,20 @@ public class Player : MonoBehaviour
         {
             Attack();
         }
+        else if (isLooting)
+        {
+            Loot();
+        }
+        lootingInterface.SetActive(isLooting);
+
+        if (Input.GetKeyDown(KeyCode.Escape) && isLooting)
+        {
+            CloseLootingTab();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //TODO menue
+        }
 
         //create the target point of the player
         if (playerPlane.Raycast(ray, out hitDistance) && canMove)
@@ -90,6 +112,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void CloseLootingTab()
+    {
+        SetTarget(null);
+        currentLoots = new List<GameObject>();
+        isLooting = false;
+        canMove = true;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "PMR")
@@ -103,12 +133,23 @@ public class Player : MonoBehaviour
 
     bool CheckRange()
     {
-        if (target)
+        if (target && !enemy.isDead)
         {
             if (Vector3.Distance(transform.position, target.transform.position) <= range)
             {
                 isAttacking = true;
                 return true;
+            }
+        }
+        else if(target && enemy )
+        {
+            if (enemy.isDead) { 
+                if (Vector3.Distance(transform.position, target.transform.position) <= lootRange)
+                {
+                    canMove = false;
+                    isLooting = true;
+                    return true;
+                }
             }
         }
         return false;
@@ -156,6 +197,17 @@ public class Player : MonoBehaviour
         else
         {
             pmr = target.transform;
+        }
+    }
+
+    void Loot()
+    {
+        if (!enemy.isLooted) { 
+            List<GameObject> loots = enemy.getLoots();
+            foreach (GameObject loot in loots)
+            {
+                currentLoots.Add(Instantiate(loot, lootingGrid.transform));
+            }
         }
     }
 

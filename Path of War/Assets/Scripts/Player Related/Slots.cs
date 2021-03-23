@@ -19,4 +19,6 @@ public class Slots : MonoBehaviour
     {
         
     }
+
+    public void UseItem() { }
 }
