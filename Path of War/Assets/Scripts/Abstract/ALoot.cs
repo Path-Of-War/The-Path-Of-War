@@ -14,7 +14,7 @@ public class ALoot : MonoBehaviour
     protected LootType type = LootType.consomable;
     public Sprite spr;
     public string lootName;
-    bool isInInventory = false;
+    public bool isInInventory = false;
 
     public virtual void Effect()
     {

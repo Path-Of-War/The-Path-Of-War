@@ -3943,7 +3943,8 @@ MonoBehaviour:
   textsToShow:
   - yolo
   - yolo v2
-  items: []
+  items:
+  - {fileID: 7636538705817450927, guid: b6ace413691f41f43addf0c7f4c4a14a, type: 3}
 --- !u!54 &1587709471
 Rigidbody:
   m_ObjectHideFlags: 0

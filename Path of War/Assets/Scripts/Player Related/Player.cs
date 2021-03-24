@@ -255,6 +255,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void EarnItem(GameObject item)
+    {
+        GameObject tempLoot = Instantiate(item, inventoryGrid.transform);
+        tempLoot.GetComponent<ALoot>().isInInventory = true;
+        inventoryData.Add(tempLoot);
+    }
+
     public void SetTarget(GameObject t)
     {
         if (t) { 
