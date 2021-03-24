@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     //combat
     public GameObject target;
     public AEnemy enemy;
+    public AInteractable interactable;
+    public GameObject interactInterface;
     public float range;
     public float attackSpeed; //formula is: 1 second / attackSpeed
     float lastTimeAttacked = 0f;
@@ -115,6 +117,13 @@ public class Player : MonoBehaviour
         {
             //TODO menue
         }
+        if (interactable) { 
+            if(Vector3.Distance(transform.position, interactable.pos.transform.position) <= lootRange && !interactable.textInterface.activeInHierarchy)
+            {
+                Debug.Log("Interact with");
+                interactable.InteractWith();
+            }
+        }
 
         if (enemy)
         {
@@ -147,8 +156,13 @@ public class Player : MonoBehaviour
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy)
+        {
+            interactable.NextText();
+        }
 
-        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy)
+
+        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy)
         {
             RaycastHit hit;
 
@@ -156,7 +170,6 @@ public class Player : MonoBehaviour
             {
                 if(hit.transform.tag == "Enemy")
                 {
-                    Debug.Log("enemy");
                     target = hit.transform.gameObject;
                     enemy = target.GetComponent<AEnemy>();
                     if (!enemy.isDead) {
@@ -168,6 +181,13 @@ public class Player : MonoBehaviour
                         agent.SetDestination(enemy.pos.transform.position);
                         agent.stoppingDistance = lootRange - 1;
                     }
+                }
+                else if(hit.transform.tag == "NPC")
+                {
+                    interactable = hit.transform.gameObject.GetComponent<AInteractable>();
+                    agent.SetDestination(interactable.pos.transform.position);
+                    target = null;
+                    enemy = null;
                 }
                 else
                 {

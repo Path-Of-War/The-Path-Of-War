@@ -58,12 +58,12 @@ MonoBehaviour:
   pEffect: {fileID: 5813723554751920830}
   pEquipement: {fileID: 1494476136}
   movementSpeed: 2
-  clickPoint: {fileID: 5139136162700564446, guid: fe3da549a1e115f4eb17ca721aca6e8c, type: 3}
-  pmr: {fileID: 0}
   agent: {fileID: 0}
   canMove: 1
   target: {fileID: 0}
   enemy: {fileID: 0}
+  interactable: {fileID: 0}
+  interactInterface: {fileID: 0}
   range: 4
   attackSpeed: 1.25
   lootRange: 2

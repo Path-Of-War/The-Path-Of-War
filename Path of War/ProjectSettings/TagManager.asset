@@ -9,6 +9,7 @@ TagManager:
   - InvSlot
   - Inv
   - Item
+  - NPC
   layers:
   - Default
   - TransparentFX
