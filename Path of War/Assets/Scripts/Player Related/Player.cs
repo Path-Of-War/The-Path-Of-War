@@ -17,24 +17,17 @@ public class Player : MonoBehaviour
 
     //movement
     public float movementSpeed;
-    public GameObject clickPoint;
-    public Transform pmr;
-    GameObject triggerPMR;
     public NavMeshAgent agent;
     public bool canMove = true;
 
-    //states
-    bool isIdle;
-    bool isAttacking;
-    bool isLooting;
 
     //animation
     Animation anim;
     private string currentAnimName;
 
     //combat
-    GameObject target;
-    AEnemy enemy;
+    public GameObject target;
+    public AEnemy enemy;
     public float range;
     public float attackSpeed; //formula is: 1 second / attackSpeed
     float lastTimeAttacked = 0f;
@@ -92,12 +85,58 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         float hitDistance = 0.0f;
 
-        //speed the attack animation to be good with the attack speed
-        if (isAttacking)
+        
+
+        //if the player have a target point move the player to it
+        if (agent.destination == transform.position && target == null)
         {
-            foreach (AnimationState aState in anim)
+            Idle();
+        }
+        else if (enemy == null)
+        {
+            currentAnimName = "walk";
+            anim.CrossFade("walk");
+        }
+        else if (enemy != null)
+        {
+            if (Vector3.Distance(transform.position, enemy.transform.position) > range)
             {
-                aState.speed = 1f * attackSpeed +0.1f;
+                currentAnimName = "walk";
+                anim.CrossFade("walk");
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Escape) && lootingInterface.activeInHierarchy)
+        {
+            CloseLootingTab();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //TODO menue
+        }
+
+        if (enemy)
+        {
+            if (Vector3.Distance(transform.position, enemy.transform.position) <= range && !enemy.isDead)
+            {
+                foreach (AnimationState aState in anim)
+                {
+                    aState.speed = 1f * attackSpeed + 0.1f;
+                }
+                if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
+                {
+                    
+                    //Deal the damage in this loop
+                    currentAnimName = "attack";
+                    anim.CrossFade("attack", 0.1f);
+                    lastTimeAttacked = Time.time;
+                    enemy.TakeDamage(attack);
+                }
+            }
+            else if (Vector3.Distance(transform.position, enemy.transform.position) <= lootRange && enemy.isDead && !enemy.isLooted)
+            {
+                Loot();
             }
         }
         else
@@ -108,159 +147,68 @@ public class Player : MonoBehaviour
             }
         }
 
-        //if the player have a target point move the player to it
-        if (pmr) {
-            Move();
-        }
-        else
-        {
-            Idle();
-        }
 
-        if (isAttacking)
-        {
-            Attack();
-        }
-        else if (isLooting)
-        {
-            Loot();
-        }
-        lootingInterface.SetActive(isLooting);
-
-        if (Input.GetKeyDown(KeyCode.Escape) && isLooting)
-        {
-            CloseLootingTab();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //TODO menue
-        }
-
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy)
         {
             RaycastHit hit;
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
             {
-                if (pmr)
-                    DestroyImmediate(pmr.gameObject);
-                pmr = Instantiate(clickPoint.transform, hit.point, Quaternion.identity);
+                if(hit.transform.tag == "Enemy")
+                {
+                    Debug.Log("enemy");
+                    target = hit.transform.gameObject;
+                    enemy = target.GetComponent<AEnemy>();
+                    if (!enemy.isDead) {
+                        agent.SetDestination(enemy.pos.transform.position);
+                        agent.stoppingDistance = range - 1;
+                    }
+                    else if (enemy.isDead)
+                    {
+                        agent.SetDestination(enemy.pos.transform.position);
+                        agent.stoppingDistance = lootRange - 1;
+                    }
+                }
+                else
+                {
+                    Debug.Log("ground");
+                    agent.SetDestination(hit.point);
+                    agent.stoppingDistance = 0;
+                }
+
             }
         }
     }
 
     private void CloseLootingTab()
     {
+        lootingInterface.SetActive(false);
+        enemy.isLooted = true;
+        Destroy(enemy.gameObject);
         SetTarget(null);
         currentLoots = new List<GameObject>();
-        isLooting = false;
         canMove = true;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "PMR")
-        {
-            triggerPMR = other.gameObject;
-            triggerPMR.GetComponent<PMR>().DestroyPMR();
-        }
-    }
-
     #endregion
-
-    bool CheckRange()
-    {
-        if (target && !enemy.isDead)
-        {
-            if (Vector3.Distance(transform.position, target.transform.position) <= range)
-            {
-                isAttacking = true;
-                return true;
-            }
-        }
-        else if(target && enemy )
-        {
-            if (enemy.isDead) { 
-                if (Vector3.Distance(transform.position, target.transform.position) <= lootRange)
-                {
-                    canMove = false;
-                    isLooting = true;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private void Move()
-    {
-        if (!CheckRange() && canMove) 
-        {
-            if (currentAnimName == "idle" && anim.isPlaying)
-            {
-                isAttacking = false;
-                isIdle = false;
-                //TODO change for pathfinding
-                agent.SetDestination(pmr.position);
-                transform.LookAt(pmr.transform);
-                //transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
-
-                if (currentAnimName != "walk")
-                {
-                    currentAnimName = "walk";
-                    anim.CrossFade("walk");
-                }
-            }
-            else {
-                isAttacking = false;
-                isIdle = false;
-                //TODO change for pathfinding
-                agent.SetDestination(pmr.position);
-                transform.LookAt(pmr.transform);
-                //transform.position = Vector3.MoveTowards(transform.position, pmr.position, movementSpeed * Time.deltaTime);
-
-                if (currentAnimName != "walk") {
-                    currentAnimName = "walk";
-                    anim.CrossFadeQueued("walk");
-                }
-            }
-            
-        }
-    }
+    
 
     private void Idle()
     {
-        isAttacking = false;
-        isIdle = true;
-
-        currentAnimName = "idle";
-        anim.CrossFade("idle");
-    }
-
-    void Attack()
-    {
-        if (enemy) { 
-            if (Vector3.Distance(transform.position, enemy.transform.position) <= range)
-            {
-                isIdle = false;
-                canMove = false;
-                isAttacking = true;
-                if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
-                {
-                    //Deal the damage in this loop
-
-                    currentAnimName = "attack";
-                    anim.CrossFade("attack",0.1f);
-                    lastTimeAttacked = Time.time;
-                    enemy.TakeDamage(attack);
-                }
-            }
+        if(currentAnimName != "attack") { 
+            currentAnimName = "idle";
+            anim.CrossFade("idle");
         }
     }
 
     void Loot()
     {
-        if (!enemy.isLooted) { 
+        
+        lootingInterface.SetActive(true);
+        if (!enemy.isLooted) {
+            Debug.Log("loot if");
             List<GameObject> loots = enemy.getLoots();
+            Debug.Log(loots.Count);
             foreach (GameObject loot in loots)
             {
                 currentLoots.Add(Instantiate(loot, lootingGrid.transform));
@@ -295,19 +243,12 @@ public class Player : MonoBehaviour
         }
         else
         {
+            agent.SetDestination(transform.position);
             target = null;
             enemy = null;
         }
     }
 
-
-    public void EnemyKilled()
-    {
-        isIdle = true;
-        isAttacking = false;
-        isLooting = false;
-        canMove = true;
-    }
     
     #endregion
 }

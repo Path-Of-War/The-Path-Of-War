@@ -25,10 +25,17 @@ public class PMR : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Enemy")
-        {
-            p.SetTarget(other.gameObject);
-            p.agent.stoppingDistance = p.range/2;
+        if (other.gameObject.tag == "Enemy") { 
+            if (other.gameObject.GetComponent<AEnemy>().isDead)
+            {
+                p.SetTarget(other.gameObject);
+                p.agent.stoppingDistance = p.lootRange - 1;
+            }
+            else
+            {
+                p.SetTarget(other.gameObject);
+                p.agent.stoppingDistance = p.range - 1;
+            }
         }
     }
 
@@ -36,8 +43,16 @@ public class PMR : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            p.SetTarget(other.gameObject);
-            p.agent.stoppingDistance = p.range/2;
+            if (other.gameObject.GetComponent<AEnemy>().isDead)
+            {
+                p.SetTarget(other.gameObject);
+                p.agent.stoppingDistance = p.lootRange - 1;
+            }
+            else
+            {
+                p.SetTarget(other.gameObject);
+                p.agent.stoppingDistance = p.range-1;
+            }
         }
     }
 }

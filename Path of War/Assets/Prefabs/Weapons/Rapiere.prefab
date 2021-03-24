@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5664824829683333643}
   m_Layer: 0
   m_Name: Rapiere
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,6 +112,8 @@ MonoBehaviour:
   attack: 3
   bonusRange: 0.5
   attackSpeed: 2
+  isUsed: 0
+  level: 0
 --- !u!222 &5664824829683333636
 CanvasRenderer:
   m_ObjectHideFlags: 0

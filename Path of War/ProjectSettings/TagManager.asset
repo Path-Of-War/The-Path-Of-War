@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - InvSlot
   - Inv
+  - Item
   layers:
   - Default
   - TransparentFX

@@ -16,6 +16,10 @@ public class AEnemy : MonoBehaviour
     Player p;
     public bool isDead = false;
     public bool isLooted = false;
+    bool lootGenerated = false;
+
+
+    public GameObject pos;
 
     public int experiencePoint;
 
@@ -51,10 +55,7 @@ public class AEnemy : MonoBehaviour
         isDead = true;
         Debug.Log(enemyName + " Died");
         p.pEffect.EarnExpereience(experiencePoint);
-        //Destroy(gameObject);
         p.SetTarget(null);
-        p.EnemyKilled();
-        gameObject.isStatic = true;
         Quaternion target = Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90);
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);
         transform.rotation = target;
@@ -64,15 +65,17 @@ public class AEnemy : MonoBehaviour
     public List<GameObject> getLoots()
     {
         List<GameObject> lootsEarned = new List<GameObject>();
-
-        for (int i = 0; i < loots.Count; i++)
-        {
-            if (lootPercentage[i] >= Random.Range(0, 100))
+        if (!lootGenerated) { 
+            
+            for (int i = 0; i < loots.Count; i++)
             {
-                lootsEarned.Add(loots[i]);
+                if (lootPercentage[i] >= Random.Range(0, 100))
+                {
+                    lootsEarned.Add(loots[i]);
+                }
             }
+            lootGenerated = true;
         }
-        isLooted = true;
         return lootsEarned;
     }
 }
