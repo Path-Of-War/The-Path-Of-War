@@ -18,7 +18,14 @@ public class AInteractable : MonoBehaviour
     public virtual void InteractWith()
     {
         textInterface.SetActive(true);
-        textRef.text = textsToShow[currentTextIndex];
+        if (textsToShow.Count == 0 && items.Count > 0)
+        {
+            NextText();
+        }
+        else
+        {
+            textRef.text = textsToShow[currentTextIndex];
+        }
     }
 
     public virtual void NextText()
