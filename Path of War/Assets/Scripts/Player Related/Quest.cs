@@ -9,7 +9,8 @@ public class Quest
     public enum QuestType
     {
         kill,
-        talk
+        gather,
+        none
     }
 
     public bool isActive = false;
@@ -28,14 +29,25 @@ public class Quest
     public GameObject targetToKillPos;
     public GameObject targetToKillInstance;
 
+    public GameObject targetToGather;
+
 
     public void StartQuest()
     {
         isActive = true;
         isFinished = false;
+        if(type == QuestType.gather)
+        {
+            Debug.Log(targetToGather);
+        }
+
         if(type == QuestType.kill)
         {
             targetToKillInstance = Player.Instantiate(targetToKillPrefab, targetToKillPos.transform);
+        }
+        if(type == QuestType.gather && targetToGather == null)
+        {
+            QuestFinish();
         }
     }
 
@@ -43,13 +55,22 @@ public class Quest
     {
         if(isActive && type == QuestType.kill && targetToKillInstance == null)
         {
-            Player.instance.pEffect.EarnExpereience(xpReward);
-            Player.instance.EarnItem(lootReward);
-            Player.instance.popupText.SetActive(true);
-            Player.instance.popupText.GetComponent<TMP_Text>().text = "You finished the quest: \n" + questName;
-            Player.instance.popupDeactivate = Player.instance.popupTime + Time.time;
-            isActive = false;
-            isFinished = true;
+            EndQuestPlayerImpact();
         }
+        else if(type == QuestType.gather)
+        {
+            EndQuestPlayerImpact();
+        }
+    }
+
+    void EndQuestPlayerImpact()
+    {
+        Player.instance.pEffect.EarnExpereience(xpReward);
+        Player.instance.EarnItem(lootReward);
+        Player.instance.popupText.SetActive(true);
+        Player.instance.popupText.GetComponent<TMP_Text>().text = "You finished the quest: \n" + questName;
+        Player.instance.popupDeactivate = Player.instance.popupTime + Time.time;
+        isActive = false;
+        isFinished = true;
     }
 }
