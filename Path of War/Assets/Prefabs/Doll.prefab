@@ -161,7 +161,7 @@ MonoBehaviour:
   enemyName: Doll
   maxHealth: 10
   health: 10
-  attack: 1
+  attack: 3
   attackSpeed: 0.5
   armor: 0
   range: 3
@@ -177,6 +177,7 @@ MonoBehaviour:
   isLooted: 0
   healthBarPrefab: {fileID: 6935593703939934299, guid: 5f60281cee79b3e4487272c0f0f71536, type: 3}
   healthBarObj: {fileID: 392357239563822367}
+  healthBarSlider: {fileID: 0}
   healthBarPos: {fileID: 7436050155455222635}
   pos: {fileID: 1016228450467984812}
   experiencePoint: 11

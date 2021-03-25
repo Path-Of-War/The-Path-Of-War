@@ -120,7 +120,6 @@ public class Player : MonoBehaviour
         if (interactable) { 
             if(Vector3.Distance(transform.position, interactable.pos.transform.position) <= lootRange && !interactable.textInterface.activeInHierarchy)
             {
-                Debug.Log("Interact with");
                 interactable.InteractWith();
             }
         }
@@ -191,7 +190,6 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("ground");
                     agent.SetDestination(hit.point);
                     agent.stoppingDistance = 0;
                 }
@@ -226,9 +224,7 @@ public class Player : MonoBehaviour
         
         lootingInterface.SetActive(true);
         if (!enemy.isLooted) {
-            Debug.Log("loot if");
             List<GameObject> loots = enemy.getLoots();
-            Debug.Log(loots.Count);
             foreach (GameObject loot in loots)
             {
                 currentLoots.Add(Instantiate(loot, lootingGrid.transform));

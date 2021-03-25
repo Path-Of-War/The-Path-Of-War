@@ -50,6 +50,7 @@ public class AEnemy : MonoBehaviour
                 }
             }
         }
+        UpdateHealth();
 
     }
     public void TakeDamage(int amount)
@@ -63,6 +64,7 @@ public class AEnemy : MonoBehaviour
 
     void UpdateHealth()
     {
+        healthBarSlider.GetComponentInParent<Transform>().LookAt(Camera.main.transform.position);
         healthBarSlider.maxValue = maxHealth;
         healthBarSlider.value = health;
     }
