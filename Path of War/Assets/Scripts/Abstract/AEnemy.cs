@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AEnemy : MonoBehaviour
 {
     public string enemyName;
+    public int maxHealth;
     public int health;
     public int attack;
     public float attackSpeed;
@@ -18,6 +20,12 @@ public class AEnemy : MonoBehaviour
     public bool isLooted = false;
     bool lootGenerated = false;
 
+    public GameObject healthBarPrefab;
+    public GameObject healthBarObj;
+    public Slider healthBarSlider;
+
+    public GameObject healthBarPos;
+
 
     public GameObject pos;
 
@@ -25,7 +33,9 @@ public class AEnemy : MonoBehaviour
 
     void Start()
     {
+        maxHealth = health;
         p = Player.instance;
+        healthBarSlider = healthBarObj.GetComponent<Slider>();
     }
     void Update()
     {
@@ -44,9 +54,17 @@ public class AEnemy : MonoBehaviour
     }
     public void TakeDamage(int amount)
     {
+        
         health -= amount - armor;
+        UpdateHealth();
         if (health <= 0 && !isDead)
             Die();
+    }
+
+    void UpdateHealth()
+    {
+        healthBarSlider.maxValue = maxHealth;
+        healthBarSlider.value = health;
     }
 
     void Die()
@@ -60,6 +78,7 @@ public class AEnemy : MonoBehaviour
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);
         transform.rotation = target;
         transform.position = targetPos;
+        healthBarObj.SetActive(false);
     }
 
     public List<GameObject> getLoots()
