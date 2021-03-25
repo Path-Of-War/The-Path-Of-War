@@ -33,12 +33,20 @@ public class AInteractable : MonoBehaviour
                 }
 
             }
+            else if(quests[questIndex].isActive && quests[questIndex].type == Quest.QuestType.gather && !quests[questIndex].targetToGather)
+            {
+                quests[questIndex].QuestFinish();
+                if (questIndex < quests.Count - 1)
+                {
+                    questIndex++;
+                    quests[questIndex].StartQuest();
+                }
+            }
         }
     }
 
     public virtual void InteractWith()
     {
-        Debug.Log(textsToShow.Count);
         textInterface.SetActive(true);
         if (textsToShow.Count == 0 && items.Count > 0)
         {

@@ -57,10 +57,11 @@ public class Quest
         {
             EndQuestPlayerImpact();
         }
-        else if(type == QuestType.gather)
+        else if(isActive && type == QuestType.gather && targetToGather == null)
         {
             EndQuestPlayerImpact();
         }
+
     }
 
     void EndQuestPlayerImpact()
