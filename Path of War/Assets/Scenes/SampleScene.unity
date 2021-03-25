@@ -6062,10 +6062,6 @@ PrefabInstance:
       value: red_Mushroom
       objectReference: {fileID: 0}
     - target: {fileID: 1250418689586280708, guid: 360950de75e329c4e86e46397a120c71, type: 3}
-      propertyPath: parent
-      value: 
-      objectReference: {fileID: 376724833}
-    - target: {fileID: 1250418689586280708, guid: 360950de75e329c4e86e46397a120c71, type: 3}
       propertyPath: textRef
       value: 
       objectReference: {fileID: 460486653}
@@ -6087,13 +6083,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1915685179}
     - target: {fileID: 437115922751036130, guid: 315155dadf214d849918e677021f6640, type: 3}
-      propertyPath: lootRange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 437115922751036130, guid: 315155dadf214d849918e677021f6640, type: 3}
       propertyPath: popupText
       value: 
       objectReference: {fileID: 1738263591}
+    - target: {fileID: 437115922751036130, guid: 315155dadf214d849918e677021f6640, type: 3}
+      propertyPath: xpToLevel
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 437115922751036130, guid: 315155dadf214d849918e677021f6640, type: 3}
+      propertyPath: dialogText
+      value: 
+      objectReference: {fileID: 1879390593}
     - target: {fileID: 437115922751036130, guid: 315155dadf214d849918e677021f6640, type: 3}
       propertyPath: lootingGrid
       value: 

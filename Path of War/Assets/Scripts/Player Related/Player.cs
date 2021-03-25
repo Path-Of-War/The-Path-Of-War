@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -164,11 +165,14 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy)
+        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && interactable)
         {
             interactable.NextText();
         }
-
+        else if (Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && !interactable)
+        {
+            interactInterface.gameObject.SetActive(false);
+        }
 
         if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy)
         {
@@ -199,6 +203,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
+                    interactable = null;
                     agent.SetDestination(hit.point);
                     agent.stoppingDistance = 0;
                 }

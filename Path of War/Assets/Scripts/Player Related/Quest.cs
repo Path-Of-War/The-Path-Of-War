@@ -12,7 +12,7 @@ public class Quest
         gather,
         none
     }
-
+    protected TMP_Text textRef;
     public bool isActive = false;
     public bool isFinished = false;
 
@@ -32,8 +32,13 @@ public class Quest
     public GameObject targetToGather;
 
 
-    public void StartQuest()
+    public void StartQuest(TMP_Text textReference)
     {
+        textRef = textReference;
+        string tempText = "You received the " + questName + " quest ! \n";
+        tempText += questDescription;
+        textRef.text = tempText;
+        Player.instance.interactInterface.SetActive(true);
         isActive = true;
         isFinished = false;
         if(type == QuestType.gather)
@@ -53,6 +58,7 @@ public class Quest
 
     public void QuestFinish()
     {
+        Debug.Log("Finish quest");
         if(isActive && type == QuestType.kill && targetToKillInstance == null)
         {
             EndQuestPlayerImpact();

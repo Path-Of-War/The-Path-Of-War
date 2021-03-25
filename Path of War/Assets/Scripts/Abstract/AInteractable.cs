@@ -29,7 +29,7 @@ public class AInteractable : MonoBehaviour
                 if(questIndex < quests.Count-1)
                 {
                     questIndex++;
-                    quests[questIndex].StartQuest();
+                    quests[questIndex].StartQuest(textRef);
                 }
 
             }
@@ -39,7 +39,7 @@ public class AInteractable : MonoBehaviour
                 if (questIndex < quests.Count - 1)
                 {
                     questIndex++;
-                    quests[questIndex].StartQuest();
+                    quests[questIndex].StartQuest(textRef);
                 }
             }
         }
@@ -63,11 +63,7 @@ public class AInteractable : MonoBehaviour
         if(quests.Count > 0) { 
             if(currentTextIndex >= textsToShow.Count -1 && items.Count == 0 && !quests[questIndex].isActive && quests[questIndex].type != Quest.QuestType.none && !quests[questIndex].isFinished)
             {
-                Debug.Log("Get the quest");
-                string tempText = "You received the " + quests[questIndex].questName + " quest ! \n";
-                tempText += quests[questIndex].questDescription;
-                quests[questIndex].StartQuest();
-                textRef.text = tempText;
+                quests[questIndex].StartQuest(textRef);
             }
             else if (currentTextIndex >= textsToShow.Count - 1 && items.Count == 0 )
             {

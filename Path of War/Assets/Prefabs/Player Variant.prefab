@@ -29,6 +29,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.5331872, z: 1}
   m_Center: {x: 0, y: 1.2886881, z: 0}
+--- !u!114 &529566027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5094819083632758764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4acc195fd2b454418c25263b802bc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealthBar: {fileID: 0}
 --- !u!114 &1494476136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +84,10 @@ MonoBehaviour:
   lootingGrid: {fileID: 0}
   inventoryData: []
   inventoryGrid: {fileID: 0}
+  popupText: {fileID: 0}
+  popupTime: 5
+  popupDeactivate: 0
+  dialogText: {fileID: 0}
   attack: 5
   currentHealth: 0
   maxHealth: 10
@@ -132,18 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p: {fileID: 437115922751036130}
---- !u!114 &529566027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5094819083632758764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4acc195fd2b454418c25263b802bc79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5094819083632658738
 PrefabInstance:
   m_ObjectHideFlags: 0
