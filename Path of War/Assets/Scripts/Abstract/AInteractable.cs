@@ -14,6 +14,15 @@ public class AInteractable : MonoBehaviour
 
     public List<GameObject> items = new List<GameObject>();
 
+    public Quest quest;
+
+    private void Update()
+    {
+        if(quest.isActive && quest.type == Quest.QuestType.kill && !quest.targetToKillInstance)
+        {
+            quest.QuestFinish();
+        }
+    }
 
     public virtual void InteractWith()
     {
@@ -30,7 +39,15 @@ public class AInteractable : MonoBehaviour
 
     public virtual void NextText()
     {
-        if(currentTextIndex >= textsToShow.Count -1 && items.Count == 0)
+        if(currentTextIndex >= textsToShow.Count -1 && items.Count == 0 && !quest.isActive && quest.questName != null && !quest.isFinished)
+        {
+            Debug.Log("Get the quest");
+            string tempText = "You received the " + quest.questName + " quest ! \n";
+            tempText += quest.questDescription;
+            quest.StartQuest();
+            textRef.text = tempText;
+        }
+        else if (currentTextIndex >= textsToShow.Count - 1 && items.Count == 0 )
         {
             Debug.Log("interaction ended");
             textInterface.SetActive(false);

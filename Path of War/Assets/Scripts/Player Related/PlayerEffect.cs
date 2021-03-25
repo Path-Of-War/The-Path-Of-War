@@ -41,7 +41,7 @@ public class PlayerEffect : MonoBehaviour
     {
         p.currentXp -= p.xpToLevel;
         p.currentLevel++;
-        p.xpToLevel = (int) Mathf.Pow(p.xpToLevel,1.8f);
+        p.xpToLevel = (int)(p.xpToLevel*1.8);
         Debug.Log("leveled to " + p.currentLevel);
     }
 }

@@ -44,6 +44,11 @@ public class Player : MonoBehaviour
     public List<GameObject> inventoryData;
     public GameObject inventoryGrid;
 
+    //UI
+    public GameObject popupText;
+    public float popupTime = 5f;
+    public float popupDeactivate = 0;
+
     #region stats
     //stats
     public int attack;
@@ -82,6 +87,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if(popupDeactivate <= Time.time)
+        {
+            popupText.SetActive(false);
+        }
         //Player Movement
         Plane playerPlane = new Plane(Vector3.up, transform.position);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -256,6 +265,16 @@ public class Player : MonoBehaviour
         GameObject tempLoot = Instantiate(item, inventoryGrid.transform);
         tempLoot.GetComponent<ALoot>().isInInventory = true;
         inventoryData.Add(tempLoot);
+    }
+
+    public void EarnItem(List<GameObject> items)
+    {
+        foreach (GameObject item in items)
+        {
+            GameObject tempLoot = Instantiate(item, inventoryGrid.transform);
+            tempLoot.GetComponent<ALoot>().isInInventory = true;
+            inventoryData.Add(tempLoot);
+        }
     }
 
     public void SetTarget(GameObject t)
