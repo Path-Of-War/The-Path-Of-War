@@ -33,7 +33,7 @@ public class AEnemy : MonoBehaviour
 
     void Start()
     {
-        maxHealth = health;
+        health = maxHealth;
         p = Player.instance;
         healthBarSlider = healthBarObj.GetComponent<Slider>();
     }
@@ -76,6 +76,7 @@ public class AEnemy : MonoBehaviour
         Debug.Log(enemyName + " Died");
         p.pEffect.EarnExpereience(experiencePoint);
         p.SetTarget(null);
+        p.animCtrl.state = AnimationController.States.idling;
         Quaternion target = Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90);
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y - (transform.localScale.z / 2), transform.position.z);
         transform.rotation = target;

@@ -23,8 +23,7 @@ public class Player : MonoBehaviour
 
 
     //animation
-    Animation anim;
-    private string currentAnimName;
+    public AnimationController animCtrl;
 
     //combat
     public GameObject target;
@@ -76,6 +75,7 @@ public class Player : MonoBehaviour
     #region built in functions
     void Awake()
     {
+        animCtrl = GetComponent<AnimationController>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = movementSpeed;
         baseAttackSpeed = attackSpeed;
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         if (instance)
             instance = null;
         instance = this;
-        anim = GetComponent<Animation>();
+        //anim = GetComponent<Animation>();
     }
 
     void Update()
@@ -109,15 +109,15 @@ public class Player : MonoBehaviour
         }
         else if (enemy == null)
         {
-            currentAnimName = "walk";
-            anim.CrossFade("walk");
+            animCtrl.state = AnimationController.States.walking;
+            //anim.CrossFade("walk");
         }
         else if (enemy != null)
         {
             if (Vector3.Distance(transform.position, enemy.transform.position) > range)
             {
-                currentAnimName = "walk";
-                anim.CrossFade("walk");
+                animCtrl.state = AnimationController.States.walking;
+                //anim.CrossFade("walk");
             }
         }
 
@@ -136,39 +136,35 @@ public class Player : MonoBehaviour
                 interactable.InteractWith();
             }
         }
+        
 
-        if (enemy)
+        if (enemy && !enemy.isDead)
         {
             if (Vector3.Distance(transform.position, enemy.transform.position) <= range && !enemy.isDead)
             {
-                foreach (AnimationState aState in anim)
-                {
-                    aState.speed = 1f * attackSpeed + 0.1f;
-                }
+                animCtrl.state = AnimationController.States.fighting;
                 if ((lastTimeAttacked + (1f / attackSpeed)) <= Time.time)
                 {
                     
                     //Deal the damage in this loop
-                    currentAnimName = "attack";
-                    anim.CrossFade("attack", 0.1f);
+                    //anim.CrossFade("attack", 0.1f);
                     lastTimeAttacked = Time.time;
                     enemy.TakeDamage(attack);
                 }
             }
-            else if (Vector3.Distance(transform.position, enemy.transform.position) <= lootRange && enemy.isDead && !enemy.isLooted)
+            
+        }
+        if (enemy && enemy.isDead)
+        {
+            animCtrl.state = AnimationController.States.idling;
+            if (Vector3.Distance(transform.position, enemy.transform.position) <= lootRange && enemy.isDead && !enemy.isLooted)
             {
                 Loot();
             }
         }
-        else
-        {
-            foreach (AnimationState aState in anim)
-            {
-                aState.speed = 1;
-            }
-        }
 
-        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && interactable)
+
+        if (Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && interactable)
         {
             interactable.NextText();
         }
@@ -185,6 +181,7 @@ public class Player : MonoBehaviour
             {
                 if(hit.transform.tag == "Enemy")
                 {
+                    Debug.Log("target enemy");
                     target = hit.transform.gameObject;
                     enemy = target.GetComponent<AEnemy>();
                     if (!enemy.isDead) {
@@ -230,15 +227,15 @@ public class Player : MonoBehaviour
 
     private void Idle()
     {
-        if(currentAnimName != "attack") { 
-            currentAnimName = "idle";
-            anim.CrossFade("idle");
+        if(animCtrl.state != AnimationController.States.fighting) { 
+            animCtrl.state = AnimationController.States.idling;
+            //anim.CrossFade("idle");
         }
     }
 
     void Loot()
     {
-        
+        Debug.Log("loot");
         lootingInterface.SetActive(true);
         if (!enemy.isLooted) {
             List<GameObject> loots = enemy.getLoots();
