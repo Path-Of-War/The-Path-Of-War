@@ -42,6 +42,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthBar: {fileID: 0}
+  playerManaBar: {fileID: 0}
 --- !u!114 &1494476136
 MonoBehaviour:
   m_ObjectHideFlags: 0
