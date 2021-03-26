@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -44,6 +45,13 @@ public class Player : MonoBehaviour
     public List<GameObject> inventoryData;
     public GameObject inventoryGrid;
 
+    //UI
+    public GameObject popupText;
+    public float popupTime = 5f;
+    public float popupDeactivate = 0;
+    public EndQuestUI endQuestUI;
+
+
     #region stats
     //stats
     public int attack;
@@ -82,6 +90,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
+        if(popupDeactivate <= Time.time)
+        {
+            popupText.SetActive(false);
+        }
         //Player Movement
         Plane playerPlane = new Plane(Vector3.up, transform.position);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -120,7 +133,6 @@ public class Player : MonoBehaviour
         if (interactable) { 
             if(Vector3.Distance(transform.position, interactable.pos.transform.position) <= lootRange && !interactable.textInterface.activeInHierarchy)
             {
-                Debug.Log("Interact with");
                 interactable.InteractWith();
             }
         }
@@ -156,13 +168,16 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy)
+        if(Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && interactable)
         {
             interactable.NextText();
         }
+        else if (Input.GetKeyDown(KeyCode.Return) && interactInterface.activeInHierarchy && !interactable)
+        {
+            interactInterface.gameObject.SetActive(false);
+        }
 
-
-        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy)
+        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy && !endQuestUI.childContainer.activeInHierarchy)
         {
             RaycastHit hit;
 
@@ -191,7 +206,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("ground");
+                    interactable = null;
                     agent.SetDestination(hit.point);
                     agent.stoppingDistance = 0;
                 }
@@ -226,9 +241,7 @@ public class Player : MonoBehaviour
         
         lootingInterface.SetActive(true);
         if (!enemy.isLooted) {
-            Debug.Log("loot if");
             List<GameObject> loots = enemy.getLoots();
-            Debug.Log(loots.Count);
             foreach (GameObject loot in loots)
             {
                 currentLoots.Add(Instantiate(loot, lootingGrid.transform));
@@ -260,6 +273,16 @@ public class Player : MonoBehaviour
         GameObject tempLoot = Instantiate(item, inventoryGrid.transform);
         tempLoot.GetComponent<ALoot>().isInInventory = true;
         inventoryData.Add(tempLoot);
+    }
+
+    public void EarnItem(List<GameObject> items)
+    {
+        foreach (GameObject item in items)
+        {
+            GameObject tempLoot = Instantiate(item, inventoryGrid.transform);
+            tempLoot.GetComponent<ALoot>().isInInventory = true;
+            inventoryData.Add(tempLoot);
+        }
     }
 
     public void SetTarget(GameObject t)
