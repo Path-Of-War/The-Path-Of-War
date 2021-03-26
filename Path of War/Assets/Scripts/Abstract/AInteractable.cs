@@ -26,22 +26,21 @@ public class AInteractable : MonoBehaviour
             if(quests[questIndex].isActive && quests[questIndex].type == Quest.QuestType.kill && !quests[questIndex].targetToKillInstance)
             {
                 quests[questIndex].QuestFinish();
-                if(questIndex < quests.Count-1)
-                {
-                    questIndex++;
-                    quests[questIndex].StartQuest(textRef);
-                }
 
             }
             else if(quests[questIndex].isActive && quests[questIndex].type == Quest.QuestType.gather && !quests[questIndex].targetToGather)
             {
                 quests[questIndex].QuestFinish();
-                if (questIndex < quests.Count - 1)
-                {
-                    questIndex++;
-                    quests[questIndex].StartQuest(textRef);
-                }
             }
+        }
+    }
+
+    public virtual void EndQuest()
+    {
+        if (questIndex < quests.Count - 1)
+        {
+            questIndex++;
+            quests[questIndex].StartQuest(textRef, this);
         }
     }
 
@@ -63,7 +62,7 @@ public class AInteractable : MonoBehaviour
         if(quests.Count > 0) { 
             if(currentTextIndex >= textsToShow.Count -1 && items.Count == 0 && !quests[questIndex].isActive && quests[questIndex].type != Quest.QuestType.none && !quests[questIndex].isFinished)
             {
-                quests[questIndex].StartQuest(textRef);
+                quests[questIndex].StartQuest(textRef, this);
             }
             else if (currentTextIndex >= textsToShow.Count - 1 && items.Count == 0 )
             {

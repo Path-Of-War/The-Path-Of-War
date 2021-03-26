@@ -87,7 +87,7 @@ MonoBehaviour:
   popupText: {fileID: 0}
   popupTime: 5
   popupDeactivate: 0
-  dialogText: {fileID: 0}
+  endQuestUI: {fileID: 0}
   attack: 5
   currentHealth: 0
   maxHealth: 10
@@ -98,7 +98,7 @@ MonoBehaviour:
   baseAttackSpeed: 0
   currentLevel: 0
   currentXp: 0
-  xpToLevel: 10
+  xpToLevel: 30
 --- !u!195 &1044966070725818579
 NavMeshAgent:
   m_ObjectHideFlags: 0

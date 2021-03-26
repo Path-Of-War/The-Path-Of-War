@@ -30,10 +30,13 @@ public class Quest
     public GameObject targetToKillInstance;
 
     public GameObject targetToGather;
+    AInteractable owner;
 
 
-    public void StartQuest(TMP_Text textReference)
+
+    public void StartQuest(TMP_Text textReference, AInteractable o)
     {
+        owner = o;
         textRef = textReference;
         string tempText = "You received the " + questName + " quest ! \n";
         tempText += questDescription;
@@ -61,16 +64,16 @@ public class Quest
         Debug.Log("Finish quest");
         if(isActive && type == QuestType.kill && targetToKillInstance == null)
         {
-            EndQuestPlayerImpact();
+            Player.instance.endQuestUI.QuestPopup(this);
         }
         else if(isActive && type == QuestType.gather && targetToGather == null)
         {
-            EndQuestPlayerImpact();
+            Player.instance.endQuestUI.QuestPopup(this);
         }
 
     }
 
-    void EndQuestPlayerImpact()
+    public void EndQuestPlayerImpact()
     {
         Player.instance.pEffect.EarnExpereience(xpReward);
         Player.instance.EarnItem(lootReward);
@@ -79,5 +82,6 @@ public class Quest
         Player.instance.popupDeactivate = Player.instance.popupTime + Time.time;
         isActive = false;
         isFinished = true;
+        owner.EndQuest();
     }
 }

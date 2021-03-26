@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
     public GameObject popupText;
     public float popupTime = 5f;
     public float popupDeactivate = 0;
+    public EndQuestUI endQuestUI;
+
 
     #region stats
     //stats
@@ -88,6 +90,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
         if(popupDeactivate <= Time.time)
         {
             popupText.SetActive(false);
@@ -174,7 +177,7 @@ public class Player : MonoBehaviour
             interactInterface.gameObject.SetActive(false);
         }
 
-        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy)
+        if (Input.GetMouseButtonDown(0) && !lootingInterface.activeInHierarchy && !inventoryGrid.activeInHierarchy && !interactInterface.activeInHierarchy && !endQuestUI.childContainer.activeInHierarchy)
         {
             RaycastHit hit;
 
