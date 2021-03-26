@@ -10,6 +10,7 @@ TagManager:
   - Inv
   - Item
   - NPC
+  - Zone
   layers:
   - Default
   - TransparentFX

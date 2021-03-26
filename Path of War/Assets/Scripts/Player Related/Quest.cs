@@ -32,6 +32,8 @@ public class Quest
     public GameObject targetToGather;
     AInteractable owner;
 
+    public GameObject objectToDestroy;
+
 
 
     public void StartQuest(TMP_Text textReference, AInteractable o)
@@ -61,7 +63,6 @@ public class Quest
 
     public void QuestFinish()
     {
-        Debug.Log("Finish quest");
         if(isActive && type == QuestType.kill && targetToKillInstance == null)
         {
             Player.instance.endQuestUI.QuestPopup(this);
@@ -82,6 +83,7 @@ public class Quest
         Player.instance.popupDeactivate = Player.instance.popupTime + Time.time;
         isActive = false;
         isFinished = true;
+        Player.Destroy(objectToDestroy);
         owner.EndQuest();
     }
 }

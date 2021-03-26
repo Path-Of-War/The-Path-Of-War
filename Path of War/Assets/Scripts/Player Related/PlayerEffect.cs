@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerEffect : MonoBehaviour
 {
     public Player p;
+    public Zone currentZone;
+    public PostProcessVolume volume;
     public void Heal(int amount)
     {
         p.currentHealth += amount;
@@ -43,5 +46,13 @@ public class PlayerEffect : MonoBehaviour
         p.currentLevel++;
         p.xpToLevel = (int)(p.xpToLevel*1.8);
         Debug.Log("leveled to " + p.currentLevel);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "Zone")
+        {
+            volume.profile = other.GetComponent<Zone>().postProcessProfile;
+        }
     }
 }
